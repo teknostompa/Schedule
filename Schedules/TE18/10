@@ -1,0 +1,30 @@
+1 Svenska 8 10 9 30 V17 reblu,jespe
+1 Matte 9 55 10 55 V17 krili02
+1 Lunch 11 00 11 30 null null
+1 Teknik 11 35 12 55 V17 lisli,frejo
+1 Idrott_Specialicering 13 00 14 15 null ulrni01
+
+2 Språk 8 10 9 30 null null
+2 Kemi 9 55 10 55 Ke11 catst01,gerge
+2 Engelska 11 00 12 15 V17 monbo
+2 Lunch 12 20 12 50 null null
+2 Matte 13 00 14 15 V11 krili02
+
+3 Historia 8 10 9 30 V17 larha
+3 Kemi 9 40 11 00 KE11 catst01,gerge
+3 Lunch 11 00 11 30 null null
+3 Engelska 11 35 12 45 V17 monbo
+3 Idrott 13 05 14 00 Boll-Hall ulrni01
+3 Språk 14 20 15 25 null null
+
+4 Idrott 8 10 9 30 Boll-Hall ulrni01
+4 Teknik 9 55 10 55 V17 lisli,catst01
+4 Lunch 11 00 11 30 null null
+4 Teknik 11 35 12 55 V17 lisli,catst01
+4 Matte 13 00 14 15 DA11 krili02
+
+5 Svenska 8 10 9 30 V17 reblu,jespe
+5 Mentors_Tid 9 55 10 55 Ö12 monbo,krili02
+5 Lunch 11 00 11 30 null null
+5 Svenska 11 35 12 55 V17 reblu,jespe
+5 Matte 13 00 14 15 V17 krili02
