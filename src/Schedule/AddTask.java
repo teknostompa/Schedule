@@ -17,6 +17,7 @@ public class AddTask {
 		Main.Tasks[SN][4]=r;
 		Main.Tasks[SN][5]=g;
 		Main.Tasks[SN][6]=b;
+		Main.Tasks[SN][7]=255;
 		Main.TaskNames[SN][0]=ExtraInfo;
 		Main.TaskNames[SN][1]=Room;
 		Main.TaskNames[SN][2]=Subject;

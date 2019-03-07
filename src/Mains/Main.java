@@ -5,57 +5,64 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Label;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.font.TextAttribute;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Draw.DrawSchedule;
+import Draw.DrawUI;
 import Objects.AddObject;
 import Schedule.AddTask;
 import Schedule.DownloadSchedule;
-import Schedule.DrawSchedule;
 
-public class Main extends JPanel{
+public class Main extends JPanel implements MouseListener{
 	private static final long serialVersionUID = 6487229432938324648L;
 	public static Dimension SS = Toolkit.getDefaultToolkit().getScreenSize();
-	public static int[][] ScreenObjects = new int[1000][7];
-	public static int[][] Tasks = new int[1000][7];
+	public static int[][][] ScreenObjects = new int[10][1000][9];
+	public static int[][] Tasks = new int[1000][8];
 	public static String[][] TaskNames = new String[1000][4];
 	public static int NOObjects = 0;
 	int yes=0;
 	BufferedImage img;
+	public static GraphicsEnvironment ge;
 	public static Font QuicksandLight;
+	public static Graphics2D g2d;
+	static int MPX;
+	static int MPY;
 	public void paint(Graphics G) {
+		GMP();
+		hoverOverTask();
 		if(yes==0) {
-			try {
-			    img = ImageIO.read(new File("bg.jpg"));
-			} catch (IOException e) {
-				
-			}
+			initializeGraphics(G);
 		}
 		
 		ImageObserver paintingChild = null;
 		G.drawImage(img, 0, 0, SS.width, SS.height, paintingChild);
 		DrawSchedule.drawSchedule(G);
+		DrawUI.drawUI(G);
 		yes=1;
-		for(int i = 0; i < AddObject.SOL; i++) {
-			G.fillRect(ScreenObjects[i][0],ScreenObjects[i][1],ScreenObjects[i][2], ScreenObjects[i][3]);
-		}
+		repaint();
 	}
 	
 	public static void main(String[] args) {
+		
 		try {
-			QuicksandLight = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts\\custom_font.ttf")).deriveFont(Font.BOLD,24f);
-		    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			QuicksandLight = Font.createFont(Font.TRUETYPE_FONT, new File("Quicksand-Light.ttf")).deriveFont(18f);
+		    ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		    //register the font
 		    ge.registerFont(QuicksandLight);
 		} catch (FontFormatException | IOException e) {
@@ -66,7 +73,11 @@ public class Main extends JPanel{
 		F.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		F.setUndecorated(true);
 		DownloadSchedule.GetSchedule("Schedules/TE18/", 10);
-		//AddObject.addObject(0, 0, 160, SS.width, new Color(200,100,0));
+		AddObject.addObject(0 ,-200 , 0, 200, SS.height, new Color(49, 48, 48));
+		AddObject.addObject(1, 10, 10, 30, 25, new Color(0,0,0,0));
+		AddObject.addObject(1, 10, 10, 30, 5, new Color(0));
+		AddObject.addObject(1, 10, 20, 30, 5, new Color(0));
+		AddObject.addObject(1, 10, 30, 30, 5, new Color(0));
 		F.setSize(SS);
 		F.setTitle("Schedule");
         F.setVisible(true);
@@ -74,7 +85,88 @@ public class Main extends JPanel{
         F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         F.add(main);
 	}
+
+	public static void GMP(){
+		Point MP = MouseInfo.getPointerInfo().getLocation();
+		MPX = MP.x;
+		MPY = MP.y;
+	}
 	
+	public static void hoverOverTask() {
+		for(int i = 0; i < AddTask.SN; i++) {
+			if(MPX > Tasks[i][0]
+			&& MPY > Tasks[i][1]
+			&& MPX < Tasks[i][0]+Tasks[i][2]
+			&& MPY < Tasks[i][1]+Tasks[i][3]) {
+				if(Tasks[i][7] > 0) {
+					Tasks[i][7]-=15;
+				}
+			}else {
+				if(Tasks[i][7] < 255) {
+					Tasks[i][7]+=15;
+				}
+			}
+		}
+	}
 	
+	@Override
+	public void mouseClicked(MouseEvent m) {
+		for(int i = 0; i < ScreenObjects[1].length;i++) {
+			if(ScreenObjects[1][i][0] + ScreenObjects[9][0][8] < MPX
+			&& ScreenObjects[1][i][1] < MPY
+			&& ScreenObjects[1][i][0] + ScreenObjects[1][i][2] + ScreenObjects[9][0][8] > MPX
+			&& ScreenObjects[1][i][1] + ScreenObjects[1][i][3] > MPY) {
+				
+				if(ScreenObjects[9][0][8]==0) {
+					ScreenObjects[9][0][8] = 200;
+					System.out.println("yes1");
+					break;
+				}else if(ScreenObjects[9][0][8]==200) {
+					ScreenObjects[9][0][8] = 0;
+					System.out.println("yes");
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		 
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		
+	}
+	
+	public void initializeGraphics(Graphics G) {
+		addMouseListener(this);
+		Map<?, ?> desktopHints = 
+			    (Map<?, ?>) Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
+
+			g2d = (Graphics2D) G;
+			if (desktopHints != null) {
+			    g2d.setRenderingHints(desktopHints);
+			}
+			g2d.setRenderingHint(
+				    RenderingHints.KEY_ANTIALIASING,
+				    RenderingHints.VALUE_ANTIALIAS_ON);
+		try {
+		    img = ImageIO.read(new File("bg.png"));
+		} catch (IOException e) {
+			
+		}
+	}
 
 }
