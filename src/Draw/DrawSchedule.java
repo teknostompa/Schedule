@@ -2,22 +2,15 @@ package Draw;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
-import java.util.Map;
-
+import java.awt.RenderingHints;
 import Mains.Main;
 import Schedule.AddTask;
 
 public class DrawSchedule {
 	public static void drawSchedule(Graphics G) {
-		Map<?, ?> desktopHints = 
-		    (Map<?, ?>) Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
-
-		Main.g2d = (Graphics2D) G;
-		if (desktopHints != null) {
-		    Main.g2d.setRenderingHints(desktopHints);
-		}
+		Main.g2d.setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		for (int i = 0; i<AddTask.SN; i++) {
 			G.setFont(Main.QuicksandLight);
 			//G.setFont(G.getFont().deriveFont(18.0f));
@@ -30,7 +23,7 @@ public class DrawSchedule {
 			G.setFont(Main.QuicksandLight);
 			if(!Main.TaskNames[i][0].equals("null")) {
 				int wi = G.getFontMetrics().stringWidth(Main.TaskNames[i][0]);
-				G.drawString(Main.TaskNames[i][0], Main.Tasks[i][0]+150-wi-10,Main.Tasks[i][1]+30);
+				G.drawString(Main.TaskNames[i][0], (int) (Main.Tasks[i][0]+(Main.SS.width/7)-wi-10),Main.Tasks[i][1]+30);
 			}
 
 			if(!Main.TaskNames[i][2].equals("Lunch")) {
@@ -57,23 +50,23 @@ public class DrawSchedule {
 		G.setColor(c);
 		String a = "Monday";
 		int wi =G.getFontMetrics().stringWidth(a);
-		G.drawString(a, Main.SS.width/2-wi/2+b*160,70);
+		G.drawString(a, Main.SS.width/2-wi/2+b*210,70);
 		b+=1;
 		a = "Tuesday";
 		wi =G.getFontMetrics().stringWidth(a);
-		G.drawString(a, Main.SS.width/2-wi/2+b*160,70);
+		G.drawString(a, Main.SS.width/2-wi/2+b*210,70);
 		b+=1;
 		a = "Wednesday";
 		wi =G.getFontMetrics().stringWidth(a);
-		G.drawString(a, Main.SS.width/2-wi/2+b*160,70);
+		G.drawString(a, Main.SS.width/2-wi/2+b*210,70);
 		b+=1;
 		a = "Thursday";
 		wi =G.getFontMetrics().stringWidth(a);
-		G.drawString(a, Main.SS.width/2-wi/2+b*160,70);
+		G.drawString(a, Main.SS.width/2-wi/2+b*210,70);
 		b+=1;
 		a = "Friday";
 		wi =G.getFontMetrics().stringWidth(a);
-		G.drawString(a, Main.SS.width/2-wi/2+b*160,70);
+		G.drawString(a, Main.SS.width/2-wi/2+b*210,70);
 		
 	}
 }
