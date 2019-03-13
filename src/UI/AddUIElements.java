@@ -14,5 +14,6 @@ public class AddUIElements {
 		AddObject.addObject(1, 10, 30, 30, 3, new Color(0,0,0));
 		AddObject.addObject(2 ,-200 , 70, 200, 50, new Color(200, 200, 48));
 		AddObject.addObject(2 ,-200 , 130, 200, 50, new Color(200, 200, 48));
+		AddObject.addObject(3 ,Main.SS.width/2-100 , 5, 200, 40, new Color(255, 255, 255));
 	}
 }

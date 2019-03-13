@@ -1,9 +1,8 @@
-/Schedule/
 /Mains/
-/Draw/
-/DownloadAssets/
-/GameStates/
-/UI/
-/MouseHandeler/
+/Schedule/
 /Frame/
 /Assets/
+/UI/
+/Draw/
+/States/
+/Objects/

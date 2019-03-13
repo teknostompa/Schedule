@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -22,18 +23,22 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 
+import AddForm.FormObjects;
 import Assets.DownloadColors;
+import Assets.DownloadSchedule;
+import Assets.DownloadScheduleList;
 import Frame.initializeFrame;
-import GameStates.GameStateHandeler;
 import MouseHandeler.MouseCheck;
-import Schedule.DownloadSchedule;
+import States.StateHandeler;
 import UI.AddUIElements;
 
 public class Main extends JPanel implements MouseListener{
 	private static final long serialVersionUID = 6487229432938324648L;
 	public static Dimension SS = Toolkit.getDefaultToolkit().getScreenSize();
 	public static int[][][] ScreenObjects = new int[10][1000][9];
+	public static int[][] AdminForm = new int[1000][9];
 	public static int[][] Tasks = new int[1000][8];
 	public static String[][] TaskNames = new String[1000][4];
 	public static String[][] Colors = new String[1000][4];
@@ -48,21 +53,33 @@ public class Main extends JPanel implements MouseListener{
 	public static String CurrentState = "Schedule";
 	public static ImageObserver paintingChild = null;
 	static String currentSchedule = "TE18";
+	public static JFrame F;
+	public static JPanel p;
+	public static int done = 0;
+	public static ArrayList<String> ListItems;
 	public void paint(Graphics G) {
 		MouseCheck.checkAllMouseActions();
 		init(G);
-		GameStateHandeler.drawGameState(G);
+		loadSchedule();
+		StateHandeler.drawState(G);
 		repaint();
 	}
 	
 	public static void main(String[] args) {
-		
+		try {
+			DownloadScheduleList.DownloadList();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
 		Main main = new Main();
-		JFrame F = new JFrame();
+		F = new JFrame();
+		p = new JPanel(new SpringLayout());
 		DownloadColors.downloadColors();
 		AddUIElements.addUIElements();
+		FormObjects.addFormObjects();
 		initializeFrame.initFrame(F);
         F.add(main);
+		//F.add(p);
 	}
 
 	@Override
@@ -87,12 +104,37 @@ public class Main extends JPanel implements MouseListener{
 			&& ScreenObjects[2][i][1] < MPY
 			&& ScreenObjects[2][i][0] + ScreenObjects[2][i][2] + ScreenObjects[9][0][8] > MPX
 			&& ScreenObjects[2][i][1] + ScreenObjects[2][i][3] > MPY) {
-				if(i==6) {
+				if(i==0) {
 					CurrentState="Admin";
 					break;
-				}else if(i==5) {
+				}else if(i==1) {
 					CurrentState="Schedule";
 				}
+			}
+		}
+		if(CurrentState.equals("List")
+//			&& MPX>SS.width-100
+//			&& MPX<SS.width+100
+			&& MPY>45) {
+			int tempY = MPY-45;
+			tempY/=40;
+			if(tempY<ListItems.size()) {
+				currentSchedule=ListItems.get(tempY);
+				System.out.println(currentSchedule);
+				done=0;
+				DownloadSchedule.i=0;
+				Tasks = new int[1000][8];
+			}
+		}
+		if(ScreenObjects[3][0][0] < MPX
+			&& ScreenObjects[3][0][1] < MPY
+			&& ScreenObjects[3][0][0] + ScreenObjects[3][0][2] > MPX
+			&& ScreenObjects[3][0][1] + ScreenObjects[3][0][3] > MPY
+			&& CurrentState.equals("Schedule") || CurrentState.equals("List")) {
+			if(CurrentState=="List") {
+				CurrentState="Schedule";
+			}else {
+				CurrentState="List";	
 			}
 		}
 	}
@@ -119,10 +161,14 @@ public class Main extends JPanel implements MouseListener{
 	
 	public void init(Graphics G) {
 		if(yes==0) {
-		Calendar calendar = new GregorianCalendar();
-		Date trialTime = new Date();   
-		calendar.setTime(trialTime);    
-		DownloadSchedule.GetSchedule("Assets/Schedules", currentSchedule, calendar.get(Calendar.WEEK_OF_YEAR));
+		//DownloadSchedule.GetSchedule("Assets/Schedules", currentSchedule, calendar.get(Calendar.WEEK_OF_YEAR));
+		
+//		try {
+//			DownloadSchedule.download();
+//		} catch (ClassNotFoundException | IOException | InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		addMouseListener(this);
 		Map<?, ?> desktopHints = 
 			    (Map<?, ?>) Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
@@ -149,5 +195,18 @@ public class Main extends JPanel implements MouseListener{
 		}
 		yes=1;
 	}
+	}
+	public static void loadSchedule() {
+		if(done==0) {
+			Calendar calendar = new GregorianCalendar();
+			Date trialTime = new Date();   
+			calendar.setTime(trialTime);    
+			try {
+				DownloadSchedule.download(currentSchedule, calendar.get(Calendar.WEEK_OF_YEAR));
+			} catch (ClassNotFoundException | IOException | InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 	}
 }
