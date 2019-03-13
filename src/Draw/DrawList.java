@@ -12,6 +12,8 @@ public class DrawList {
 			G.fillRect(Main.SS.width/2-100, 45+(i*40), 200, 40);
 			G.setColor(new Color(0,0,0));
 			G.drawRect(Main.SS.width/2-100, 45+(i*40), 200, 40);
+			G.setFont(Main.QuicksandLight.deriveFont(24f));
+			G.drawString(Main.ListItems.get(i), Main.SS.width/2-G.getFontMetrics().stringWidth(Main.ListItems.get(i))/2, 70+(i*40));
 		}
 	}
 }

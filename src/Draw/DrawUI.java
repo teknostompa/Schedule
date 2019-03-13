@@ -14,14 +14,18 @@ public class DrawUI {
 				G.setColor(c);
 				if(j!=3) {
 					G.fillRect(Main.ScreenObjects[j][i][0] + Main.ScreenObjects[9][0][8],Main.ScreenObjects[j][i][1],Main.ScreenObjects[j][i][2], Main.ScreenObjects[j][i][3]);
-				}else {
+				}else if(Main.CurrentState.equals("Schedule") || Main.CurrentState.equals("List")){
 					G.fillRect(Main.ScreenObjects[j][i][0],Main.ScreenObjects[j][i][1],Main.ScreenObjects[j][i][2], Main.ScreenObjects[j][i][3]);
+					G.setColor(new Color(0));
+					G.setFont(G.getFont().deriveFont(24.0f));
+					G.drawString("Schedules", Main.SS.width/2-G.getFontMetrics().stringWidth("Schedules")/2, 33);
 				}
 			}
 		}
+		G.setColor(new Color(255,255,255));
 		G.setFont(G.getFont().deriveFont(24.0f));
 		G.drawString("Admin Panel",-100+Main.ScreenObjects[9][0][8]- G.getFontMetrics().stringWidth("Admin Panel")/2,100);
-		G.setColor(new Color(0));
-		G.drawString("Schedules", Main.SS.width/2-G.getFontMetrics().stringWidth("Schedules")/2, 33);
+		G.drawString("Schedules",-100+Main.ScreenObjects[9][0][8]- G.getFontMetrics().stringWidth("Schedules")/2,160);
+
 	}
 }

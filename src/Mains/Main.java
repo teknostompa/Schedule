@@ -31,6 +31,7 @@ import Assets.DownloadSchedule;
 import Assets.DownloadScheduleList;
 import Frame.initializeFrame;
 import MouseHandeler.MouseCheck;
+import Schedule.AddTask;
 import States.StateHandeler;
 import UI.AddUIElements;
 
@@ -124,6 +125,8 @@ public class Main extends JPanel implements MouseListener{
 				done=0;
 				DownloadSchedule.i=0;
 				Tasks = new int[1000][8];
+				TaskNames = new String[1000][4];
+				AddTask.SN=0;
 			}
 		}
 		if(ScreenObjects[3][0][0] < MPX
