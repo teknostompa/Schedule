@@ -11,7 +11,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.sql.*;
 import java.util.ArrayList;
 
 import Mains.Main;
@@ -40,25 +39,22 @@ public class DownloadSchedule {
 			e.printStackTrace();
 		}
 	}
+	@SuppressWarnings({ "unchecked", "unlikely-arg-type" })
 	public static void download(String currentschedule, int week) throws UnknownHostException, IOException, ClassNotFoundException, InterruptedException{
         InetAddress host = InetAddress.getLocalHost();//.getByName("192.168.1.232");
         Socket socket = null;
         ObjectOutputStream oos = null;
         ObjectInputStream ois = null;
-        boolean breakIt = false;
-		DownloadColors.downloadColors();
+        DownloadColors.downloadColors();
 		int done1 = 0;
         	try {
             socket = new Socket(host.getHostName(), 25565);
             oos = new ObjectOutputStream(socket.getOutputStream());
-            //System.out.println("Sending request to Socket Server");
             if(i==100)oos.writeObject("exit");
             else oos.writeObject(i+" "+currentschedule+" "+week);
             ois = new ObjectInputStream(socket.getInputStream());
             
             ArrayList<String> message = (ArrayList<String>) ois.readObject();
-            //System.out.println(message);
-            String[] values = {"yes"};
             if(message.get(0).equals("end")) {
             	Main.done=1;
             	done1 = 1;

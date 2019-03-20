@@ -25,7 +25,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
-import AddForm.FormObjects;
 import Assets.DownloadColors;
 import Assets.DownloadSchedule;
 import Assets.DownloadScheduleList;
@@ -55,7 +54,6 @@ public class Main extends JPanel implements MouseListener{
 	public static ImageObserver paintingChild = null;
 	static String currentSchedule = "TE18";
 	public static JFrame F;
-	public static JPanel p;
 	public static int done = 0;
 	public static ArrayList<String> ListItems;
 	public void paint(Graphics G) {
@@ -67,20 +65,12 @@ public class Main extends JPanel implements MouseListener{
 	}
 	
 	public static void main(String[] args) {
-		try {
-			DownloadScheduleList.DownloadList();
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
 		Main main = new Main();
 		F = new JFrame();
-		p = new JPanel(new SpringLayout());
 		DownloadColors.downloadColors();
 		AddUIElements.addUIElements();
-		FormObjects.addFormObjects();
 		initializeFrame.initFrame(F);
         F.add(main);
-		//F.add(p);
 	}
 
 	@Override
@@ -114,8 +104,8 @@ public class Main extends JPanel implements MouseListener{
 			}
 		}
 		if(CurrentState.equals("List")
-//			&& MPX>SS.width-100
-//			&& MPX<SS.width+100
+			&& MPX>SS.width/2-100
+			&& MPX<SS.width/2+100
 			&& MPY>45) {
 			int tempY = MPY-45;
 			tempY/=40;
@@ -164,12 +154,17 @@ public class Main extends JPanel implements MouseListener{
 	
 	public void init(Graphics G) {
 		if(yes==0) {
+		try {
+			DownloadScheduleList.DownloadList();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
 		//DownloadSchedule.GetSchedule("Assets/Schedules", currentSchedule, calendar.get(Calendar.WEEK_OF_YEAR));
 		
 //		try {
 //			DownloadSchedule.download();
 //		} catch (ClassNotFoundException | IOException | InterruptedException e1) {
-//			// TODO Auto-generated catch block
+//			//Auto-generated catch block
 //			e1.printStackTrace();
 //		}
 		addMouseListener(this);
@@ -207,7 +202,7 @@ public class Main extends JPanel implements MouseListener{
 			try {
 				DownloadSchedule.download(currentSchedule, calendar.get(Calendar.WEEK_OF_YEAR));
 			} catch (ClassNotFoundException | IOException | InterruptedException e1) {
-				// TODO Auto-generated catch block
+				// Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}

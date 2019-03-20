@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import Mains.Main;
 
 public class DownloadScheduleList {
-	@SuppressWarnings("resource")
+	@SuppressWarnings({ "resource", "unchecked" })
 	public static void DownloadList() throws IOException, ClassNotFoundException {
 		InetAddress host = InetAddress.getLocalHost();//.getByName("192.168.1.232");
         Socket socket = null;
